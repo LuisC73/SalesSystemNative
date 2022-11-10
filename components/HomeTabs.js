@@ -18,7 +18,7 @@ function HomeTabs() {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons
-              name="person-add-outline"
+              name="person-circle-outline"
               color={"#FFA1CF"}
               size={20}
             ></Ionicons>
@@ -31,7 +31,7 @@ function HomeTabs() {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons
-              name="people-outline"
+              name="cart-outline"
               color={"#FFA1CF"}
               size={20}
             ></Ionicons>
