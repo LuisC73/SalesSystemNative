@@ -19,7 +19,7 @@ function HomeTabs() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons
               name="person-circle-outline"
-              color={"#FFA1CF"}
+              color={"#8E05C2"}
               size={20}
             ></Ionicons>
           ),
@@ -32,7 +32,7 @@ function HomeTabs() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons
               name="cart-outline"
-              color={"#FFA1CF"}
+              color={"#8E05C2"}
               size={20}
             ></Ionicons>
           ),
