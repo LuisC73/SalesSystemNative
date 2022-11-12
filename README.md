@@ -9,7 +9,8 @@
 - [React Native](https://reactnative.dev/)
 - [React Navigation](https://reactnavigation.org/)
 - [React Hook Form](https://react-hook-form.com/)
-- [Axios](https://axios-http.com/docs/intro)
+- [Axios](https://react-hook-form.com/)
+- [Expo](https://expo.dev/)
 
 ## How To Use
 
