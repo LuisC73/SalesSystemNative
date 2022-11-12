@@ -6,9 +6,11 @@ import {
   TextInput,
   Image,
   Picker,
+  ActivityIndicator,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import axios from "axios";
 
 function SellerComponent() {
   const {
@@ -25,7 +27,28 @@ function SellerComponent() {
     },
   });
 
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [name, setName] = useState("");
+
+  const getSellers = async () => {
+    try {
+      const url = `http://192.168.1.6:3000/api/sellers`;
+      const response = await axios.get(url);
+      setData(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const onSubmit = (data) => console.log(data);
+
+  useEffect(() => {
+    getSellers();
+  }, []);
 
   return (
     <View style={styles.container}>
