@@ -56,17 +56,24 @@ function SellerComponent() {
     let name = data.name,
       email = data.email,
       totalCommission = data.totalCommission;
-    reset();
-    try {
-      const response = await axios.post(`http://192.168.1.6:3000/api/sellers`, {
-        name,
-        email,
-        totalCommission,
-      });
-      console.log(data);
-      alert("Seller added successfully...");
-    } catch (error) {
-      console.log(error);
+    if (!name.trim() || !email.trim() || !totalCommission.trim()) {
+      alert("Invalid fields");
+    } else {
+      reset();
+      try {
+        const response = await axios.post(
+          `http://192.168.1.6:3000/api/sellers`,
+          {
+            name,
+            email,
+            totalCommission,
+          }
+        );
+        console.log(data);
+        alert("Seller added successfully...");
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
