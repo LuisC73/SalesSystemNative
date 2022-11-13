@@ -28,6 +28,8 @@ function SellerComponent() {
 
   const [data, setData] = useState([]);
   const [complete, setComplete] = useState(false);
+  const [msgGood, setMsgGood] = useState("");
+  const [msgBad, setMsgBad] = useState("");
 
   const getSellers = async () => {
     try {
@@ -36,7 +38,7 @@ function SellerComponent() {
       setData(response.data);
       console.log(response.data);
     } catch (error) {
-      console.log(error);
+      setMsgBad(error);
     }
   };
 
@@ -48,7 +50,7 @@ function SellerComponent() {
       const response = await axios.get(url);
       setData(response.data);
     } catch (error) {
-      console.log(error);
+      setMsgBad(error);
     }
   };
 
@@ -57,7 +59,7 @@ function SellerComponent() {
       email = data.email,
       totalCommission = data.totalCommission;
     if (!name.trim() || !email.trim() || !totalCommission.trim()) {
-      alert("Invalid fields");
+      setMsgBad("Invalid fields");
     } else {
       reset();
       try {
@@ -70,9 +72,9 @@ function SellerComponent() {
           }
         );
         console.log(data);
-        alert("Seller added successfully...");
+        setMsgGood("Seller added successfully...");
       } catch (error) {
-        console.log(error);
+        setMsgBad(error);
       }
     }
   };
@@ -82,7 +84,7 @@ function SellerComponent() {
       email = data.email,
       totalCommission = data.totalCommission;
     if (!name.trim() || !email.trim() || !totalCommission.trim()) {
-      alert("Invalid fields");
+      setMsgBad("Invalid fields");
     } else {
       reset();
       try {
@@ -92,9 +94,9 @@ function SellerComponent() {
           email,
           totalCommission,
         });
-        alert("Seller updated successfully...");
+        setMsgGood("Seller updated successfully...");
       } catch (error) {
-        console.log(error);
+        setMsgBad(error);
       }
     }
   };
@@ -111,11 +113,11 @@ function SellerComponent() {
           email,
           totalCommission,
         });
-        alert("Seller removed successfully ...");
+        setMsgGood("Seller removed successfully...");
         reset();
       }
     } catch (error) {
-      console.log(error);
+      setMsgBad(error);
     }
   };
 
@@ -142,6 +144,13 @@ function SellerComponent() {
     getSellers();
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setMsgBad("");
+      setMsgGood("");
+    }, 3000);
+  }, [msgBad, msgGood]);
+
   return (
     <View style={styles.container}>
       <View
@@ -151,6 +160,10 @@ function SellerComponent() {
           alignContent: "center",
         }}
       >
+        <Text style={{ color: "green", alignContent: "center" }}>
+          {msgGood}
+        </Text>
+        <Text style={{ color: "red" }}>{msgBad}</Text>
         <View style={styles.content}>
           <Controller
             control={control}
