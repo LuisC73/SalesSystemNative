@@ -160,10 +160,12 @@ function SellerComponent() {
           alignContent: "center",
         }}
       >
-        <Text style={{ color: "green", alignContent: "center" }}>
+        <Text style={{ color: "green", fontSize: "18px", textAlign: "center" }}>
           {msgGood}
         </Text>
-        <Text style={{ color: "red" }}>{msgBad}</Text>
+        <Text style={{ color: "red", fontSize: "18px", textAlign: "center" }}>
+          {msgBad}
+        </Text>
         <View style={styles.content}>
           <Controller
             control={control}
@@ -327,7 +329,14 @@ function SellerComponent() {
           alignContent: "center",
         }}
       >
-        <Text style={{ color: "#fff", fontSize: "20px", fontWeight: "700" }}>
+        <Text
+          style={{
+            color: "green",
+            fontSize: "20px",
+            fontWeight: "700",
+            textAlign: "center",
+          }}
+        >
           ¡Request made successfully!
         </Text>
         {handleResult(data)}
