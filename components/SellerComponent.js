@@ -77,6 +77,27 @@ function SellerComponent() {
     }
   };
 
+  const editSeller = async (data) => {
+    let name = data.name,
+      email = data.email,
+      totalCommission = data.totalCommission;
+    if (!name.trim() || !email.trim() || !totalCommission.trim()) {
+      alert("Invalid fields");
+    } else {
+      try {
+        const url = `http://192.168.1.6:3000/api/sellers/${data.idSeller}`;
+        const response = await axios.put(url, {
+          name,
+          email,
+          totalCommission,
+        });
+        alert("Seller updated successfully...");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   const handleResult = (data) => {
     return (
       <View style={styles.result}>
@@ -250,6 +271,12 @@ function SellerComponent() {
             onPress={handleSubmit(saveSeller)}
           >
             <Text style={styles.buttonText}>Save</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSubmit(editSeller)}
+          >
+            <Text style={styles.buttonText}>Edit</Text>
           </TouchableOpacity>
         </View>
       </View>
