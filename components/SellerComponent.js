@@ -6,7 +6,6 @@ import {
   TextInput,
   Image,
   Picker,
-  ActivityIndicator,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -23,11 +22,10 @@ function SellerComponent() {
       idSeller: "",
       name: "",
       email: "",
-      total: "",
+      totalCommission: "",
     },
   });
 
-  const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [complete, setComplete] = useState(false);
 
@@ -39,30 +37,42 @@ function SellerComponent() {
       console.log(response.data);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 
   const getSellersId = async (data) => {
-    setLoading(true);
     setComplete(true);
     reset();
     try {
       const url = `http://192.168.1.6:3000/api/sellers/${data.idSeller}`;
       const response = await axios.get(url);
       setData(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
+    }
+  };
+
+  const saveSeller = async (data) => {
+    let name = data.name,
+      email = data.email,
+      totalCommission = data.totalCommission;
+    reset();
+    try {
+      const response = await axios.post(`http://192.168.1.6:3000/api/sellers`, {
+        name,
+        email,
+        totalCommission,
+      });
+      console.log(data);
+      alert("Seller added successfully...");
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const handleResult = (data) => {
     return (
-      <View style={{ marginTop: 20 }}>
+      <View style={styles.result}>
         <Text key={data._id} style={styles.text}>
           IdSeller: {data._id}
         </Text>
@@ -105,10 +115,8 @@ function SellerComponent() {
                   styles.inputs,
                   {
                     borderColor:
-                      errors.idSeller?.type == "required" ||
                       errors.idSeller?.type == "pattern" ||
-                      errors.idSeller?.type == "minLength" ||
-                      errors.idSeller?.type == "maxLength"
+                      errors.idSeller?.type == "minLength"
                         ? "red"
                         : "#8E05C2",
                   },
@@ -121,10 +129,6 @@ function SellerComponent() {
             )}
             name="idSeller"
           />
-
-          {errors.idSeller?.type == "required" && (
-            <Text style={{ color: "red" }}>The idSeller is required</Text>
-          )}
           {errors.idSeller?.type == "pattern" && (
             <Text style={{ color: "red" }}>Only numbers</Text>
           )}
@@ -144,7 +148,6 @@ function SellerComponent() {
                   styles.inputs,
                   {
                     borderColor:
-                      errors.name?.type == "required" ||
                       errors.name?.type == "pattern" ||
                       errors.name?.type == "minLength"
                         ? "red"
@@ -159,12 +162,8 @@ function SellerComponent() {
             )}
             name="name"
           />
-
-          {errors.name?.type == "required" && (
-            <Text style={{ color: "red" }}>The name is required</Text>
-          )}
           {errors.name?.type == "pattern" && (
-            <Text style={{ color: "red" }}>Only letters</Text>
+            <Text style={{ color: "red" }}>Only letters and spaces</Text>
           )}
           {errors.name?.type == "minLength" && (
             <Text style={{ color: "red" }}>Min 2 characters</Text>
@@ -181,7 +180,6 @@ function SellerComponent() {
                   styles.inputs,
                   {
                     borderColor:
-                      errors.email?.type == "required" ||
                       errors.email?.type == "pattern" ||
                       errors.email?.type == "minLength"
                         ? "red"
@@ -196,10 +194,6 @@ function SellerComponent() {
             )}
             name="email"
           />
-
-          {errors.email?.type == "required" && (
-            <Text style={{ color: "red" }}>The email is required</Text>
-          )}
           {errors.email?.type == "pattern" && (
             <Text style={{ color: "red" }}>Only email</Text>
           )}
@@ -218,9 +212,8 @@ function SellerComponent() {
                   styles.inputs,
                   {
                     borderColor:
-                      errors.total?.type == "required" ||
-                      errors.total?.type == "pattern" ||
-                      errors.total?.type == "minLength"
+                      errors.totalCommission?.type == "pattern" ||
+                      errors.totalCommission?.type == "minLength"
                         ? "red"
                         : "#8E05C2",
                   },
@@ -231,16 +224,12 @@ function SellerComponent() {
                 placeholder="Total Commisions"
               />
             )}
-            name="total"
+            name="totalCommission"
           />
-
-          {errors.total?.type == "required" && (
-            <Text style={{ color: "red" }}>The total is required</Text>
-          )}
-          {errors.total?.type == "pattern" && (
+          {errors.totalCommission?.type == "pattern" && (
             <Text style={{ color: "red" }}>Only numbers</Text>
           )}
-          {errors.total?.type == "minLength" && (
+          {errors.totalCommission?.type == "minLength" && (
             <Text style={{ color: "red" }}>Min 2 characters</Text>
           )}
           <TouchableOpacity
@@ -248,6 +237,12 @@ function SellerComponent() {
             onPress={handleSubmit(getSellersId)}
           >
             <Text style={styles.buttonText}>Search</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSubmit(saveSeller)}
+          >
+            <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -258,7 +253,9 @@ function SellerComponent() {
           alignContent: "center",
         }}
       >
-        <Text>¡Request made successfully!</Text>
+        <Text style={{ color: "#fff", fontSize: "20px", fontWeight: "700" }}>
+          ¡Request made successfully!
+        </Text>
         {handleResult(data)}
         <TouchableOpacity
           style={styles.button}
@@ -302,6 +299,13 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignContent: "center",
     justifyContent: "center",
+  },
+  result: {
+    marginTop: 20,
+  },
+  text: {
+    fontSize: 16,
+    color: "#fff",
   },
 });
 
