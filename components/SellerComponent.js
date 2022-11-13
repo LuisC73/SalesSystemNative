@@ -84,6 +84,7 @@ function SellerComponent() {
     if (!name.trim() || !email.trim() || !totalCommission.trim()) {
       alert("Invalid fields");
     } else {
+      reset();
       try {
         const url = `http://192.168.1.6:3000/api/sellers/${data.idSeller}`;
         const response = await axios.put(url, {
@@ -95,6 +96,26 @@ function SellerComponent() {
       } catch (error) {
         console.log(error);
       }
+    }
+  };
+
+  const deleteSeller = async (data) => {
+    let name = data.name,
+      email = data.email,
+      totalCommission = data.totalCommission;
+    try {
+      if (confirm("Esta seguro de eliminar el cliente")) {
+        const url = `http://192.168.1.6:3000/api/sellers/${data.idSeller}`;
+        const response = await axios.delete(url, {
+          name,
+          email,
+          totalCommission,
+        });
+        alert("Seller removed successfully ...");
+        reset();
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -277,6 +298,12 @@ function SellerComponent() {
             onPress={handleSubmit(editSeller)}
           >
             <Text style={styles.buttonText}>Edit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSubmit(deleteSeller)}
+          >
+            <Text style={styles.buttonText}>Delete</Text>
           </TouchableOpacity>
         </View>
       </View>
