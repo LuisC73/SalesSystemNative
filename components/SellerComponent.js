@@ -288,19 +288,19 @@ function SellerComponent() {
             <Text style={styles.buttonText}>Search</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: "#4E9F3D" }]}
             onPress={handleSubmit(saveSeller)}
           >
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: "#1597BB" }]}
             onPress={handleSubmit(editSeller)}
           >
             <Text style={styles.buttonText}>Edit</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: "#FF0000" }]}
             onPress={handleSubmit(deleteSeller)}
           >
             <Text style={styles.buttonText}>Delete</Text>
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#8E05C2",
     width: "100%",
     borderRadius: 20,
-    marginTop: 50,
+    marginTop: 30,
     alignItems: "center",
     padding: 5,
   },
