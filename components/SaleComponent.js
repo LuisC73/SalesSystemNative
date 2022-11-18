@@ -44,14 +44,19 @@ function SaleComponent() {
   };
 
   const getSalesId = async (data) => {
-    setComplete(true);
-    reset();
-    try {
-      const url = `http://172.16.61.225:3000/api/sales/${data.idSeller}`;
-      const response = await axios.get(url);
-      setData(response.data);
-    } catch (error) {
-      setMsgBad(error);
+    let idSeller = data.idSeller;
+    if (!idSeller.trim()) {
+      setMsgBad("Invalid fields");
+    } else {
+      setComplete(true);
+      reset();
+      try {
+        const url = `http://172.16.61.225:3000/api/sales/${data.idSeller}`;
+        const response = await axios.get(url);
+        setData(response.data);
+      } catch (error) {
+        setMsgBad(error);
+      }
     }
   };
 
@@ -372,6 +377,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
     padding: 5,
+    backgroundColor: "transparent",
   },
 });
 

@@ -43,14 +43,19 @@ function SellerComponent() {
   };
 
   const getSellersId = async (data) => {
-    setComplete(true);
-    reset();
-    try {
-      const url = `http://172.16.61.225:3000/api/sellers/${data.idSeller}`;
-      const response = await axios.get(url);
-      setData(response.data);
-    } catch (error) {
-      setMsgBad(error);
+    let idSeller = data.idSeller;
+    if (!idSeller.trim()) {
+      setMsgBad("Invalid fields");
+    } else {
+      setComplete(true);
+      reset();
+      try {
+        const url = `http://172.16.61.225:3000/api/sellers/${data.idSeller}`;
+        const response = await axios.get(url);
+        setData(response.data);
+      } catch (error) {
+        setMsgBad(error);
+      }
     }
   };
 
