@@ -31,6 +31,7 @@ function SaleComponent() {
   const [msgGood, setMsgGood] = useState("");
   const [msgBad, setMsgBad] = useState("");
   const [zoneSale, setZone] = useState("North");
+  const [dataSeller, setDataSeller] = useState([]);
 
   const getSales = async () => {
     try {
@@ -42,6 +43,21 @@ function SaleComponent() {
       setMsgBad(error);
     }
   };
+
+  const getSellers = async () => {
+    try {
+      const url = `http://172.16.61.225:3000/api/sellers`;
+      const response = await axios.get(url);
+      setDataSeller(response.data);
+      console.log(response.data);
+    } catch (error) {
+      setMsgBad(error);
+    }
+  };
+
+  useEffect(() => {
+    getSellers();
+  }, []);
 
   const getSalesId = async (data) => {
     let idSeller = data.idSeller;
@@ -61,28 +77,39 @@ function SaleComponent() {
   };
 
   const saveSales = async (data) => {
-    let idSeller = data.idSeller,
-      zone = zoneSale,
-      date = data.date,
-      saleValue = data.saleValue;
-    if (!zone.trim() || !date.trim() || !saleValue.trim() || !idSeller.trim()) {
-      setMsgBad("Invalid fields");
-    } else {
-      reset();
-      try {
-        const response = await axios.post(
-          `http://172.16.61.225:3000/api/sales`,
-          {
-            idSeller,
-            zone,
-            date,
-            saleValue,
+    for (const i in dataSeller) {
+      if (data.idSeller != dataSeller[i].idSeller) {
+        setMsgBad("Error, Seller no exist!!");
+      } else {
+        let idSeller = data.idSeller,
+          zone = zoneSale,
+          date = data.date,
+          saleValue = data.saleValue;
+        if (
+          !zone.trim() ||
+          !date.trim() ||
+          !saleValue.trim() ||
+          !idSeller.trim()
+        ) {
+          setMsgBad("Invalid fields");
+        } else {
+          reset();
+          try {
+            const response = await axios.post(
+              `http://172.16.61.225:3000/api/sales`,
+              {
+                idSeller,
+                zone,
+                date,
+                saleValue,
+              }
+            );
+            console.log(data);
+            setMsgGood("Sale added successfully...");
+          } catch (error) {
+            setMsgBad(error);
           }
-        );
-        console.log(data);
-        setMsgGood("Sale added successfully...");
-      } catch (error) {
-        setMsgBad(error);
+        }
       }
     }
   };
