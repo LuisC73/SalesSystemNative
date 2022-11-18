@@ -56,10 +56,11 @@ function SaleComponent() {
   };
 
   const saveSales = async (data) => {
-    let zone = zoneSale,
+    let idSeller = data.idSeller, 
+      zone = zoneSale,
       date = data.date,
       saleValue = data.saleValue;
-    if (!zone.trim() || !date.trim() || !saleValue.trim()) {
+    if (!zone.trim() || !date.trim() || !saleValue.trim() || !idSeller.trim()) {
       setMsgBad("Invalid fields");
     } else {
       reset();
@@ -67,6 +68,7 @@ function SaleComponent() {
         const response = await axios.post(
           `http://172.16.61.225:3000/api/sales`,
           {
+            idSeller,
             zone,
             date,
             saleValue,
@@ -81,10 +83,11 @@ function SaleComponent() {
   };
 
   const editSale = async (data) => {
-    let zone = zoneSale,
+    let idSeller = data.idSeller,
+      zone = zoneSale,
       date = data.date,
       saleValue = data.saleValue;
-    if (!zone.trim() || !date.trim() || !saleValue.trim()) {
+    if (!zone.trim() || !date.trim() || !saleValue.trim() || !idSeller.trim()) {
       setMsgBad("Invalid fields");
     } else {
       reset();
@@ -103,13 +106,15 @@ function SaleComponent() {
   };
 
   const deleteSale = async (data) => {
-    let zone = zoneSale,
+    let idSeller = data.idSeller,
+      zone = zoneSale,
       date = data.date,
       saleValue = data.saleValue;
     try {
       if (confirm("Esta seguro de eliminar la venta")) {
         const url = `http://172.16.61.225:3000/api/sales/${data.idSeller}`;
         const response = await axios.delete(url, {
+          idSeller,
           zone,
           date,
           saleValue,
@@ -122,13 +127,14 @@ function SaleComponent() {
     }
   };
 
-  console.log(zoneSale);
-
   const handleResult = (data) => {
     return (
       <View style={styles.result}>
         <Text key={data._id} style={styles.text}>
-          IdSeller: {data._id}
+          _Id: {data._id}
+        </Text>
+        <Text key={data.idSeller} style={styles.text}>
+          IdSeller: {data.idSeller}
         </Text>
         <Text key={zoneSale} style={styles.text}>
           Zone: {zoneSale}

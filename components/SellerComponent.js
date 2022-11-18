@@ -55,10 +55,16 @@ function SellerComponent() {
   };
 
   const saveSeller = async (data) => {
-    let name = data.name,
+    let idSeller = data.idSeller,
+      name = data.name,
       email = data.email,
       totalCommission = data.totalCommission;
-    if (!name.trim() || !email.trim() || !totalCommission.trim()) {
+    if (
+      !name.trim() ||
+      !email.trim() ||
+      !totalCommission.trim() ||
+      !idSeller.trim()
+    ) {
       setMsgBad("Invalid fields");
     } else {
       reset();
@@ -66,12 +72,12 @@ function SellerComponent() {
         const response = await axios.post(
           `http://172.16.61.225:3000/api/sellers`,
           {
+            idSeller,
             name,
             email,
             totalCommission,
           }
         );
-        console.log(data);
         setMsgGood("Seller added successfully...");
       } catch (error) {
         setMsgBad(error);
@@ -80,10 +86,16 @@ function SellerComponent() {
   };
 
   const editSeller = async (data) => {
-    let name = data.name,
+    let idSeller = data.idSeller,
+      name = data.name,
       email = data.email,
       totalCommission = data.totalCommission;
-    if (!name.trim() || !email.trim() || !totalCommission.trim()) {
+    if (
+      !name.trim() ||
+      !email.trim() ||
+      !totalCommission.trim() ||
+      !idSeller.trim()
+    ) {
       setMsgBad("Invalid fields");
     } else {
       reset();
@@ -102,13 +114,15 @@ function SellerComponent() {
   };
 
   const deleteSeller = async (data) => {
-    let name = data.name,
+    let idSeller = data.idSeller,
+      name = data.name,
       email = data.email,
       totalCommission = data.totalCommission;
     try {
       if (confirm("Esta seguro de eliminar el cliente")) {
         const url = `http://172.16.61.225:3000/api/sellers/${data.idSeller}`;
         const response = await axios.delete(url, {
+          idSeller,
           name,
           email,
           totalCommission,
@@ -125,7 +139,10 @@ function SellerComponent() {
     return (
       <View style={styles.result}>
         <Text key={data._id} style={styles.text}>
-          IdSeller: {data._id}
+          _Id: {data._id}
+        </Text>
+        <Text key={data.idSeller} style={styles.text}>
+          IdSeller: {data.idSeller}
         </Text>
         <Text key={data.name} style={styles.text}>
           Name: {data.name}
