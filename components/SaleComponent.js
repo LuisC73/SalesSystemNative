@@ -30,7 +30,7 @@ function SaleComponent() {
   const [complete, setComplete] = useState(false);
   const [msgGood, setMsgGood] = useState("");
   const [msgBad, setMsgBad] = useState("");
-  const [zoneSale, setZone] = useState("Norte");
+  const [zoneSale, setZone] = useState("North");
 
   const getSales = async () => {
     try {
@@ -56,7 +56,7 @@ function SaleComponent() {
   };
 
   const saveSales = async (data) => {
-    let idSeller = data.idSeller, 
+    let idSeller = data.idSeller,
       zone = zoneSale,
       date = data.date,
       saleValue = data.saleValue;
@@ -111,7 +111,7 @@ function SaleComponent() {
       date = data.date,
       saleValue = data.saleValue;
     try {
-      if (confirm("Esta seguro de eliminar la venta")) {
+      if (confirm("Are you sure of delete the sale?")) {
         const url = `http://172.16.61.225:3000/api/sales/${data.idSeller}`;
         const response = await axios.delete(url, {
           idSeller,
@@ -214,8 +214,8 @@ function SaleComponent() {
             style={styles.select}
             onValueChange={(itemValue, itemIndex) => setZone(itemValue)}
           >
-            <Picker.Item label="Norte" value="Norte" />
-            <Picker.Item label="Sur" value="Sur" />
+            <Picker.Item label="North" value="North" />
+            <Picker.Item label="South" value="South" />
           </Picker>
 
           <Controller
@@ -246,7 +246,8 @@ function SaleComponent() {
           <Controller
             control={control}
             rules={{
-              pattern: /^[0-9]+$/i,
+              pattern:
+                /^(2[0-9][0-9][0-9][0-9][0-9][0-9]|2[0-9][0-9][0-9][0-9][0-9][0-9][0-9])$/,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput

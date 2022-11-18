@@ -119,7 +119,7 @@ function SellerComponent() {
       email = data.email,
       totalCommission = data.totalCommission;
     try {
-      if (confirm("Esta seguro de eliminar el cliente")) {
+      if (confirm("Are you sure of delete the seller?")) {
         const url = `http://172.16.61.225:3000/api/sellers/${data.idSeller}`;
         const response = await axios.delete(url, {
           idSeller,
