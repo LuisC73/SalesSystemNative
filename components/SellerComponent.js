@@ -33,7 +33,7 @@ function SellerComponent() {
 
   const getSellers = async () => {
     try {
-      const url = `http://192.168.1.6:3000/api/sellers`;
+      const url = `http://172.16.61.225:3000/api/sellers`;
       const response = await axios.get(url);
       setData(response.data);
       console.log(response.data);
@@ -46,7 +46,7 @@ function SellerComponent() {
     setComplete(true);
     reset();
     try {
-      const url = `http://192.168.1.6:3000/api/sellers/${data.idSeller}`;
+      const url = `http://172.16.61.225:3000/api/sellers/${data.idSeller}`;
       const response = await axios.get(url);
       setData(response.data);
     } catch (error) {
@@ -64,7 +64,7 @@ function SellerComponent() {
       reset();
       try {
         const response = await axios.post(
-          `http://192.168.1.6:3000/api/sellers`,
+          `http://172.16.61.225:3000/api/sellers`,
           {
             name,
             email,
@@ -88,7 +88,7 @@ function SellerComponent() {
     } else {
       reset();
       try {
-        const url = `http://192.168.1.6:3000/api/sellers/${data.idSeller}`;
+        const url = `http://172.16.61.225:3000/api/sellers/${data.idSeller}`;
         const response = await axios.put(url, {
           name,
           email,
@@ -107,7 +107,7 @@ function SellerComponent() {
       totalCommission = data.totalCommission;
     try {
       if (confirm("Esta seguro de eliminar el cliente")) {
-        const url = `http://192.168.1.6:3000/api/sellers/${data.idSeller}`;
+        const url = `http://172.16.61.225:3000/api/sellers/${data.idSeller}`;
         const response = await axios.delete(url, {
           name,
           email,
