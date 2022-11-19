@@ -33,9 +33,11 @@ function SaleComponent() {
   const [zoneSale, setZone] = useState("North");
   const [dataSeller, setDataSeller] = useState([]);
 
+  let commission = 0;
+
   const getSales = async () => {
     try {
-      const url = `http://172.16.61.225:3000/api/sales`;
+      const url = `http://192.168.1.6:3000/api/sales`;
       const response = await axios.get(url);
       setData(response.data);
       console.log(response.data);
@@ -46,7 +48,7 @@ function SaleComponent() {
 
   const getSellers = async () => {
     try {
-      const url = `http://172.16.61.225:3000/api/sellers`;
+      const url = `http://192.168.1.6:3000/api/sellers`;
       const response = await axios.get(url);
       setDataSeller(response.data);
       console.log(response.data);
@@ -54,10 +56,6 @@ function SaleComponent() {
       setMsgBad(error);
     }
   };
-
-  useEffect(() => {
-    getSellers();
-  }, []);
 
   const getSalesId = async (data) => {
     let idSeller = data.idSeller;
@@ -67,7 +65,7 @@ function SaleComponent() {
       setComplete(true);
       reset();
       try {
-        const url = `http://172.16.61.225:3000/api/sales/${data.idSeller}`;
+        const url = `http://192.168.1.6:3000/api/sales/${data.idSeller}`;
         const response = await axios.get(url);
         setData(response.data);
       } catch (error) {
@@ -79,12 +77,16 @@ function SaleComponent() {
   const saveSales = async (data) => {
     for (const i in dataSeller) {
       if (data.idSeller != dataSeller[i].idSeller) {
-        setMsgBad("Error, Seller no exist!!");
+        setMsgBad("");
       } else {
         let idSeller = data.idSeller,
           zone = zoneSale,
           date = data.date,
           saleValue = data.saleValue;
+
+        zoneSale === "North" ? (commission = 0.02) : (commission = 0.03);
+        refreshTotal(saleValue, i);
+
         if (
           !zone.trim() ||
           !date.trim() ||
@@ -96,7 +98,7 @@ function SaleComponent() {
           reset();
           try {
             const response = await axios.post(
-              `http://172.16.61.225:3000/api/sales`,
+              `http://192.168.1.6:3000/api/sales`,
               {
                 idSeller,
                 zone,
@@ -124,7 +126,7 @@ function SaleComponent() {
     } else {
       reset();
       try {
-        const url = `http://172.16.61.225:3000/api/sales/${data.idSeller}`;
+        const url = `http://192.168.1.6:3000/api/sales/${data.idSeller}`;
         const response = await axios.put(url, {
           zone,
           date,
@@ -144,7 +146,7 @@ function SaleComponent() {
       saleValue = data.saleValue;
     try {
       if (confirm("Are you sure of delete the sale?")) {
-        const url = `http://172.16.61.225:3000/api/sales/${data.idSeller}`;
+        const url = `http://192.168.1.6:3000/api/sales/${data.idSeller}`;
         const response = await axios.delete(url, {
           idSeller,
           zone,
@@ -181,8 +183,26 @@ function SaleComponent() {
     );
   };
 
+  const refreshTotal = async (saleValue, i) => {
+    let cal = commission * saleValue;
+
+    let totalCommission = dataSeller[i].totalCommission + cal;
+
+    try {
+      const url = `http://192.168.1.6:3000/api/sellers/${dataSeller[i].idSeller}`;
+      const response = await axios.put(url, {
+        totalCommission,
+      });
+    } catch (error) {
+      setMsgBad(error);
+    }
+
+    location.reload();
+  };
+
   useEffect(() => {
     getSales();
+    getSellers();
   }, []);
 
   useEffect(() => {

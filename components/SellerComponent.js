@@ -33,7 +33,7 @@ function SellerComponent() {
 
   const getSellers = async () => {
     try {
-      const url = `http://172.16.61.225:3000/api/sellers`;
+      const url = `http://192.168.1.6:3000/api/sellers`;
       const response = await axios.get(url);
       setData(response.data);
       console.log(response.data);
@@ -50,7 +50,7 @@ function SellerComponent() {
       setComplete(true);
       reset();
       try {
-        const url = `http://172.16.61.225:3000/api/sellers/${data.idSeller}`;
+        const url = `http://192.168.1.6:3000/api/sellers/${data.idSeller}`;
         const response = await axios.get(url);
         setData(response.data);
       } catch (error) {
@@ -64,6 +64,7 @@ function SellerComponent() {
       name = data.name,
       email = data.email,
       totalCommission = data.totalCommission;
+
     if (
       !name.trim() ||
       !email.trim() ||
@@ -75,7 +76,7 @@ function SellerComponent() {
       reset();
       try {
         const response = await axios.post(
-          `http://172.16.61.225:3000/api/sellers`,
+          `http://192.168.1.6:3000/api/sellers`,
           {
             idSeller,
             name,
@@ -105,7 +106,7 @@ function SellerComponent() {
     } else {
       reset();
       try {
-        const url = `http://172.16.61.225:3000/api/sellers/${data.idSeller}`;
+        const url = `http://192.168.1.6:3000/api/sellers/${data.idSeller}`;
         const response = await axios.put(url, {
           name,
           email,
@@ -123,9 +124,10 @@ function SellerComponent() {
       name = data.name,
       email = data.email,
       totalCommission = data.totalCommission;
+
     try {
       if (confirm("Are you sure of delete the seller?")) {
-        const url = `http://172.16.61.225:3000/api/sellers/${data.idSeller}`;
+        const url = `http://192.168.1.6:3000/api/sellers/${data.idSeller}`;
         const response = await axios.delete(url, {
           idSeller,
           name,
@@ -289,7 +291,7 @@ function SellerComponent() {
           <Controller
             control={control}
             rules={{
-              minLength: 2,
+              minLength: 1,
               pattern: /^[0-9]+$/i,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -316,7 +318,7 @@ function SellerComponent() {
             <Text style={{ color: "red" }}>Only numbers</Text>
           )}
           {errors.totalCommission?.type == "minLength" && (
-            <Text style={{ color: "red" }}>Min 2 characters</Text>
+            <Text style={{ color: "red" }}>Min 1 characters</Text>
           )}
           <TouchableOpacity
             style={styles.button}
