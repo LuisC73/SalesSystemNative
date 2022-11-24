@@ -58,18 +58,25 @@ function SaleComponent() {
   };
 
   const getSalesId = async (data) => {
-    let idSeller = data.idSeller;
-    if (!idSeller.trim()) {
-      setMsgBad("Invalid fields");
-    } else {
-      setComplete(true);
-      reset();
-      try {
-        const url = `http://192.168.1.6:3000/api/sales/${data.idSeller}`;
-        const response = await axios.get(url);
-        setData(response.data);
-      } catch (error) {
-        setMsgBad(error);
+    for (const i in dataSeller) {
+      if (data.idSeller != dataSeller[i].idSeller) {
+        setMsgBad("");
+      } else {
+        let idSeller = data.idSeller;
+        if (!idSeller.trim()) {
+          setMsgBad("Invalid fields");
+        } else {
+          reset();
+          try {
+            const url = `http://192.168.1.6:3000/api/sales/${data.idSeller}`;
+            const response = await axios.get(url);
+            setData(response.data);
+            setComplete(true);
+          } catch (error) {
+            setMsgBad(error);
+            setComplete(false);
+          }
+        }
       }
     }
   };
